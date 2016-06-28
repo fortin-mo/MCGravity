@@ -1,10 +1,3 @@
-/*
- * Decompiled with CFR 0_114.
- * 
- * Could not load the following classes:
- *  org.bukkit.World
- *  org.bukkit.block.Block
- */
 package dewddgravity;
 
 import dewddgravity.Gravity;
@@ -33,34 +26,36 @@ class UsefulFunction {
 					b2 = cur.getWorld().getBlockAt(cur.getX() + x, cur.getY() + y, cur.getZ() + z);
 
 					if (usedList.contains(b2) == true) {
-						// dprint.r.printAll(tr.locationToString(b2.getLocation())
-						// + " has it list continue");
-
 						continue;
 					}
 
 					// b2.setType(Material.LOG);
-
 					double xxx = Math.abs(b2.getX() - start.getX());
 					double zzz = Math.abs(b2.getZ() - start.getZ());
-
-					double dis = (xxx * xxx) + (zzz * zzz);
-					dis = Math.pow(dis, 0.5);
-
-					int strength = UsefulFunction.GetBlockStrength(cur);
 					
-					if ((xxx > strength) || (zzz > strength)) {
-						// dprint.r.printAll("out of range");
-						Gravity.countFailed++;
-						continue;
+					double strength;
+					
+					if(DigEventListener2.useFixedStrength){
+						strength = DigEventListener2.strengthRadius;
+					}
+					else strength = UsefulFunction.GetBlockStrength(cur); 
+					
+					if(DigEventListener2.useSquareRadius){
+						if ((xxx > strength) || (zzz > strength)) {
+							Gravity.countFailed++;
+							continue;
+						}
+					}
+					else{
+						double dis = (xxx * xxx) + (zzz * zzz);
+						dis = Math.pow(dis, 0.5);
+						
+						if(dis > strength){
+							Gravity.countFailed++;
+							continue;
+						}
 					}
 					
-					/*if ((xxx > Gravity.stick) || (zzz > Gravity.stick)) {
-						// dprint.r.printAll("out of range");
-						Gravity.countFailed++;
-						continue;
-					}*/
-
 					// if (b2.getY() > start.getY() - Gravity.stick && b2.getY()
 					// >
 					// 0) {

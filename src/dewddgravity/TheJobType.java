@@ -1,10 +1,3 @@
-/*
- * Decompiled with CFR 0_114.
- * 
- * Could not load the following classes:
- *  org.bukkit.Location
- *  org.bukkit.block.Block
- */
 package dewddgravity;
 
 import dewddgravity.Gravity;

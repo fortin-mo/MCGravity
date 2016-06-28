@@ -11,8 +11,6 @@ import org.bukkit.entity.Player;
 class Gravity
 implements Runnable {
 	
-	private int strength = -1;
-	
 	public static int r = 1;
 
 	public static int stick = 5;
@@ -37,12 +35,6 @@ implements Runnable {
 
 	}
 
-	public int getStrength(){
-		if(this.strength < 0){
-			strength = UsefulFunction.GetBlockStrength(this.start);
-		}
-		return this.strength;
-	}
 	
 	public Boolean canc = false;
 
@@ -58,17 +50,10 @@ implements Runnable {
 		this.curDelay = curDelay;
 		Random rnd = new Random();
 
-		// Bukkit.getScheduler().scheduleSyncDelayedTask(DigEventListener2.ac,
-		// this, rnd.nextInt(100) + 20);
-
-		// Bukkit.getScheduler().scheduleSyncDelayedTask(DigEventListener2.ac,
-		// this);
-
 	}
 
 	public void recusiveSearchBlock(Block cur, Block start, LinkedList<Block> list) {
 		// add
-		dprint.r.printC("recusiveSearchBlock called");
 		Block tmp = null;
 		int searchSpace = Gravity.r;
 		for (int x = -searchSpace; x <= searchSpace; x++) {
@@ -77,18 +62,12 @@ implements Runnable {
 				// tmp = cur.getRelative(x, 0, z);
 				tmp = cur.getWorld().getBlockAt(cur.getX() + x, cur.getY(), cur.getZ() + z);
 
-				// dprint.r.printAll("loca " +
-				// tr.locationToString(tmp.getLocation()));
-
 				double xxx = Math.abs(tmp.getX() - start.getX());
 				double zzz = Math.abs(tmp.getZ() - start.getZ());
 
 				double dis = (xxx * xxx) + (zzz * zzz);
 				dis = Math.pow(dis, 0.5);
 
-				/*
-				 * if (dis > stick) { continue; }
-				 */
 
 				if ((xxx > Gravity.stick) || (zzz > Gravity.stick)) {
 					continue;
@@ -163,9 +142,6 @@ implements Runnable {
 
 		long timeUsed = System.currentTimeMillis() - Gravity.startTime;
 		MainLoop.lostTime += timeUsed;
-		// dprint.r.printAll("><><> end " + (timeUsed) + " T " +
-		// Gravity.countDone + " F " + Gravity.countFailed + " sum "
-		// + MainLoop.lostTime);
 
 		if (found == false) {
 			Material mat = this.start.getType();
@@ -175,16 +151,12 @@ implements Runnable {
 
 			int counter = 0;
 
-			//int tmpr = Gravity.stick;
 			int tmpr = 1; //UsefulFunction.GetBlockStrength(this.start);
-			
-			//dprint.r.printC("block material : " + this.start.getType() + " , strength : " + tmpr);
 			
 			for (int x = -tmpr; x <= tmpr; x++) {
 				for (int y = -tmpr; y <= tmpr; y++) {
 					for (int z = -tmpr; z <= tmpr; z++) {
 						counter++;
-						// b2 = start.getRelative(x, y, z);
 
 						b2 = this.start.getWorld().getBlockAt(this.start.getX() + x, this.start.getY() + y,
 								this.start.getZ() + z);
@@ -194,9 +166,6 @@ implements Runnable {
 						}
 
 						MainLoop.jobs.put(b2.getLocation());
-						// Gravity noop = new Gravity(b2, player, block, counter
-						// * 30);
-
 					}
 				}
 

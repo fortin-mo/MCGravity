@@ -3,7 +3,6 @@ package dewddgravity;
 import dewddgravity.Delay;
 import dewddgravity.Gravity;
 import dewddgravity.MainLoop;
-import dewddtran.tr;
 import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -18,7 +17,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class DigEventListener2
 implements Listener {
 	public static JavaPlugin ac = null;
-
+	public static boolean useFixedStrength = false;
+	public static boolean useSquareRadius = false;
+	public static double strengthRadius = 5.0;
+	public static int maxTimeToDoJob = 1000;
+	public static int checkingDelayAsTick = 1;
+	
 	private Random rnd = new Random();
 
 	public DigEventListener2() {
@@ -53,10 +57,6 @@ implements Listener {
 	@EventHandler
 	public void eventja(BlockBreakEvent e) {
 
-		if (!tr.isrunworld(DigEventListener2.ac.getName(), e.getPlayer().getWorld().getName())) {
-			return;
-		}
-
 		Block block = e.getBlock();
 		Block b2 = null;
 
@@ -65,17 +65,12 @@ implements Listener {
 		for (int x = -r; x <= r; x++) {
 			for (int y = -r; y <= r; y++) {
 				for (int z = -r; z <= r; z++) {
-
-					// b2 = block.getRelative(x, y, z);
-
+					
 					b2 = block.getWorld().getBlockAt(block.getX() + x, block.getY() + y, block.getZ() + z);
 
 					if (Gravity.needBlock(b2) == false) {
 						continue;
 					}
-
-					// Gravity noop = new Gravity(b2, null, block, counter *
-					// 25);
 					MainLoop.jobs.put(b2.getLocation());
 
 				}
@@ -88,10 +83,6 @@ implements Listener {
 	@EventHandler
 	public void eventja(BlockExplodeEvent e) {
 
-		if (!tr.isrunworld(DigEventListener2.ac.getName(), e.getBlock().getWorld().getName())) {
-			return;
-		}
-
 		Block block = e.getBlock();
 		Block b2 = null;
 
@@ -101,15 +92,12 @@ implements Listener {
 			for (int y = -r; y <= r; y++) {
 				for (int z = -r; z <= r; z++) {
 
-					// b2 = block.getRelative(x, y, z);
 					b2 = block.getWorld().getBlockAt(block.getX() + x, block.getY() + y, block.getZ() + z);
 
 					if (Gravity.needBlock(b2) == false) {
 						continue;
 					}
 
-					// Gravity noop = new Gravity(b2, null, block, counter *
-					// 25);
 					MainLoop.jobs.put(b2.getLocation());
 
 				}
@@ -121,10 +109,6 @@ implements Listener {
 
 	@EventHandler
 	public void eventja(BlockPlaceEvent e) {
-
-		if (!tr.isrunworld(DigEventListener2.ac.getName(), e.getPlayer().getWorld().getName())) {
-			return;
-		}
 
 		Block block = e.getBlock();
 		Block b2 = null;

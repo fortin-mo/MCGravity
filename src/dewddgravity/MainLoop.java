@@ -16,7 +16,6 @@ package dewddgravity;
 import dewddgravity.DigEventListener2;
 import dewddgravity.Gravity;
 import dewddgravity.TheJobType;
-import dewddtran.tr;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -36,9 +35,9 @@ implements Runnable {
 	public void run() {
 		// always get Item from jobs
 
-		maxTime = (long) tr.gettrint("CONFIG_GRAVITY_MAXTIME_DO_THE_JOB");
+		maxTime = (long) DigEventListener2.maxTimeToDoJob;
 		if (maxTime <= 0) {
-			maxTime = 50;
+			maxTime = 1000;
 		}
 		/*
 		Gravity.stick = (int) tr.gettrint("CONFIG_GRAVITY_STICKY_RADIUS");
