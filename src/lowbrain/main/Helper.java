@@ -1,10 +1,11 @@
-package dewddgravity;
+package lowbrain.main;
 
-import dewddgravity.Gravity;
 import java.util.LinkedList;
 import org.bukkit.block.Block;
 
-class UsefulFunction {
+import lowbrain.main.Gravity;
+
+class Helper {
 	public static boolean isThisBlockHasRoot(Block cur, Block start, LinkedList<Block> usedList) {
 
 		Block b2 = null;
@@ -19,67 +20,52 @@ class UsefulFunction {
 			for (int x = -Gravity.r; x <= Gravity.r; x++) {
 				for (int z = -Gravity.r; z <= Gravity.r; z++) {
 
-					// if (x == 0 && z == 0 && y== 0) { continue; }
-
-					// b2 = cur.getRelative(x, y, z);
-
+					if(!BlockListener.allowDiagonal && Math.abs(x) + Math.abs(y) + Math.abs(z) > 1){
+						continue;
+					}
+					
 					b2 = cur.getWorld().getBlockAt(cur.getX() + x, cur.getY() + y, cur.getZ() + z);
-
 					if (usedList.contains(b2) == true) {
 						continue;
 					}
 
-					// b2.setType(Material.LOG);
 					double xxx = Math.abs(b2.getX() - start.getX());
 					double zzz = Math.abs(b2.getZ() - start.getZ());
 					
 					double strength;
 					
-					if(DigEventListener2.useFixedStrength){
-						strength = DigEventListener2.strengthRadius;
+					if(BlockListener.useFixedStrength){
+						strength = BlockListener.strengthRadius;
 					}
-					else strength = UsefulFunction.GetBlockStrength(cur); 
+					else strength = Helper.GetBlockStrength(cur); 
 					
-					if(DigEventListener2.useSquareRadius){
+					if(BlockListener.useSquareRadius){
 						if ((xxx > strength) || (zzz > strength)) {
 							Gravity.countFailed++;
 							continue;
 						}
 					}
 					else{
-						double dis = (xxx * xxx) + (zzz * zzz);
-						dis = Math.pow(dis, 0.5);
+						double dis = Math.pow((xxx * xxx) + (zzz * zzz),0.5);
+						
 						
 						if(dis > strength){
 							Gravity.countFailed++;
 							continue;
 						}
 					}
-					
-					// if (b2.getY() > start.getY() - Gravity.stick && b2.getY()
-					// >
-					// 0) {
-
-					// more research !
-
-					/*
-					 * if (Gravity.needBlock(b2) == false) { continue; }
-					 */
 
 					usedList.add(b2);
 
-					if (Gravity.needBlock(b2) == false) {
+					if (!Gravity.needBlock(b2)) {
 						Gravity.countFailed++;
 						continue;
 					}
 
-					boolean ret = UsefulFunction.isThisBlockHasRoot(b2, start, usedList);
+					boolean ret = Helper.isThisBlockHasRoot(b2, start, usedList);
 
-					if (ret == true) {
-						// dprint.r.printAll(tr.locationToString(b2.getLocation())
-						// + " = " + ret);
+					if (ret) {
 						Gravity.countDone++;
-						//dprint.r.printC(cur.getType() + " has root");
 						return true;
 					} else {
 						Gravity.countFailed++;

@@ -1,9 +1,10 @@
-package dewddgravity;
+package lowbrain.main;
 
-import dewddgravity.Gravity;
 import java.util.LinkedList;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+
+import lowbrain.main.Gravity;
 
 class TheJobType {
 	private LinkedList<Location> loc = new LinkedList<Location>();
@@ -13,8 +14,7 @@ class TheJobType {
 		Location tmp2 = null;
 
 		while ((found == false) && (this.loc.size() > 0)) {
-			// dprint.r.printAll("get()k size " + loc.size());
-
+			
 			Location tmp = this.loc.get(0);
 			this.loc.remove(0);
 
@@ -25,10 +25,6 @@ class TheJobType {
 			if (Gravity.needBlock(tmp.getBlock()) == false) {
 				continue;
 			}
-
-			/*
-			 * if (tmp.getBlock().getType().isSolid() == false) { continue; }
-			 */
 
 			tmp2 = tmp;
 			found = true;

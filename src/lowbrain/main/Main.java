@@ -1,25 +1,30 @@
-package dewddgravity;
-
-import dewddgravity.DigEventListener2;
+package lowbrain.main;
 
 import java.io.File;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import lowbrain.main.BlockListener;
+
 public class Main
 extends JavaPlugin {
     Logger log; 
-    DigEventListener2 ax = new DigEventListener2();
+    BlockListener ax = new BlockListener();
 
+    @Override
     public void onDisable() {
         this.getServer().getPluginManager().disablePlugin((Plugin)this);
         
     }
     
+    @Override
     public void onEnable() {
        
         this.getLogger().info("Loading MCGravity.jar");
@@ -36,6 +41,7 @@ extends JavaPlugin {
                 config.addDefault("CONFIG_GRAVITY_STRENGTH_RADIUS", (Object)5);
                 config.addDefault("CONFIG_GRAVITY_USE_FIXED_STRENGTH", (Object)false);
                 config.addDefault("CONFIG_GRAVITY_USE_SQUARE_RADIUS", (Object)false);
+                config.addDefault("CONFIG_GRAVITY_ALLOW_DIAGONAL", (Object)true);
                 config.options().copyDefaults(true);
                 this.saveConfig();
             } else {
@@ -46,14 +52,28 @@ extends JavaPlugin {
             e.printStackTrace();
         }
         
-        DigEventListener2.ac = this;
-        DigEventListener2.useFixedStrength = this.getConfig().getBoolean("CONFIG_GRAVITY_USE_FIXED_STRENGTH");
-        DigEventListener2.useSquareRadius = this.getConfig().getBoolean("CONFIG_GRAVITY_USE_SQUARE_RADIUS");
-        DigEventListener2.maxTimeToDoJob = this.getConfig().getInt("CONFIG_GRAVITY_MAXTIME_DO_THE_JOB");
-        DigEventListener2.strengthRadius = this.getConfig().getDouble("CONFIG_GRAVITY_STRENGTH_RADIUS");
-        DigEventListener2.checkingDelayAsTick = this.getConfig().getInt("CONFIG_GRAVITY_REPEAT_CHECKING_DELAY_AS_TICK");
+        BlockListener.ac = this;
+        BlockListener.LoadConfig();
         
         this.getServer().getPluginManager().registerEvents((Listener)this.ax, (Plugin)this);
+    }
+    
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    	if (cmd.getName().equalsIgnoreCase("mcgravity")) { // If the player typed /basic then do the following...
+    		if(args.length == 1 && args[0].equalsIgnoreCase("reload")){
+    			Bukkit.getScheduler().cancelTasks(BlockListener.ac);
+				
+    			BlockListener.LoadConfig();
+				Delay delay = new Delay();
+				Thread th = new Thread(delay);
+				th.start();
+				
+    			sender.sendMessage("MCGravity reloaded !!!");
+    			return true;
+    		}
+    	} 
+    	return false;
     }
 }
 

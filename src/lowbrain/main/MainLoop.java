@@ -1,24 +1,13 @@
-/*
- * Decompiled with CFR 0_114.
- * 
- * Could not load the following classes:
- *  dewddtran.tr
- *  dprint.r
- *  org.bukkit.Bukkit
- *  org.bukkit.Location
- *  org.bukkit.block.Block
- *  org.bukkit.entity.Player
- *  org.bukkit.plugin.Plugin
- *  org.bukkit.plugin.java.JavaPlugin
- */
-package dewddgravity;
 
-import dewddgravity.DigEventListener2;
-import dewddgravity.Gravity;
-import dewddgravity.TheJobType;
+package lowbrain.main;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+
+import lowbrain.main.BlockListener;
+import lowbrain.main.Gravity;
+import lowbrain.main.TheJobType;
 
 class MainLoop
 implements Runnable {
@@ -35,7 +24,7 @@ implements Runnable {
 	public void run() {
 		// always get Item from jobs
 
-		maxTime = (long) DigEventListener2.maxTimeToDoJob;
+		maxTime = (long) BlockListener.maxTimeToDoJob;
 		if (maxTime <= 0) {
 			maxTime = 1000;
 		}
@@ -83,7 +72,7 @@ implements Runnable {
 				}
 
 				Gravity noop = new Gravity(blo, null, 1);
-				Bukkit.getScheduler().scheduleSyncDelayedTask(DigEventListener2.ac, noop);
+				Bukkit.getScheduler().scheduleSyncDelayedTask(BlockListener.ac, noop);
 
 			}
 

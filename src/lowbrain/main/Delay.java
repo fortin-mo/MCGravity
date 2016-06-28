@@ -1,8 +1,9 @@
-package dewddgravity;
+package lowbrain.main;
 
-import dewddgravity.DigEventListener2;
-import dewddgravity.MainLoop;
 import org.bukkit.Bukkit;
+
+import lowbrain.main.BlockListener;
+import lowbrain.main.MainLoop;
 
 class Delay
 implements Runnable {
@@ -11,7 +12,7 @@ implements Runnable {
 
     @Override
 	public void run() {
-		while (DigEventListener2.ac == null) {
+		while (BlockListener.ac == null) {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -23,12 +24,12 @@ implements Runnable {
 
 		MainLoop mainLoop = new MainLoop();
 
-		long repeat = (int) DigEventListener2.ac.getConfig().getInt("CONFIG_GRAVITY_REPEAT_CHECKING_DELAY_AS_TICK");
+		long repeat = BlockListener.checkingDelayAsTick;
 		if (repeat <= 0) {
 			repeat = 1;
 		}
-
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(DigEventListener2.ac, mainLoop, 0, repeat);
+		
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(BlockListener.ac, mainLoop, 0, repeat);
 
 	}
 }

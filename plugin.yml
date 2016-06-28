@@ -1,5 +1,11 @@
-main: dewddgravity.Main
+main: lowbrain.main.Main
 name: MCGravity
-version: 1.0
-author: Lowbrain based on DewDD
-description: Setup time
+version: 1.1a
+author: Lowbrain, based on DewDD Gravity
+description: Make minecraft more realistic with a new approach of real life gravity
+commands:
+   reload:
+      description: Restart MCGravity and reload config file
+      usage: /MCGravity reload
+      permission: MCGravity.reload
+      permission-message: You don't have permission to reload

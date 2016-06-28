@@ -1,12 +1,13 @@
-package dewddgravity;
+package lowbrain.main;
 
-import dewddgravity.MainLoop;
-import dewddgravity.UsefulFunction;
 import java.util.LinkedList;
 import java.util.Random;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+
+import lowbrain.main.MainLoop;
+import lowbrain.main.Helper;
 
 class Gravity
 implements Runnable {
@@ -110,6 +111,7 @@ implements Runnable {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void run() {
 
@@ -121,8 +123,6 @@ implements Runnable {
 			return;
 		}
 		// check it's has near block or not
-
-		int r = Gravity.r;
 
 		Block b2 = null;
 
@@ -138,7 +138,7 @@ implements Runnable {
 
 		LinkedList<Block> list = new LinkedList<Block>();
 
-		boolean found = UsefulFunction.isThisBlockHasRoot(this.start, this.start, list);
+		boolean found = Helper.isThisBlockHasRoot(this.start, this.start, list);
 
 		long timeUsed = System.currentTimeMillis() - Gravity.startTime;
 		MainLoop.lostTime += timeUsed;
@@ -149,15 +149,17 @@ implements Runnable {
 			this.start.setTypeId(0, true);
 			this.start.getWorld().spawnFallingBlock(this.start.getLocation(), mat, data);
 
-			int counter = 0;
-
-			int tmpr = 1; //UsefulFunction.GetBlockStrength(this.start);
 			
-			for (int x = -tmpr; x <= tmpr; x++) {
-				for (int y = -tmpr; y <= tmpr; y++) {
-					for (int z = -tmpr; z <= tmpr; z++) {
-						counter++;
 
+			//UsefulFunction.GetBlockStrength(this.start);
+			for (int x = -Gravity.r; x <= Gravity.r; x++) {
+				for (int y = -Gravity.r; y <= Gravity.r; y++) {
+					for (int z = -Gravity.r; z <= Gravity.r; z++) {
+						
+						if(!BlockListener.allowDiagonal && Math.abs(x) + Math.abs(y) + Math.abs(z) > 1){
+							continue;
+						}
+						
 						b2 = this.start.getWorld().getBlockAt(this.start.getX() + x, this.start.getY() + y,
 								this.start.getZ() + z);
 

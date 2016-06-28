@@ -1,8 +1,5 @@
-package dewddgravity;
+package lowbrain.main;
 
-import dewddgravity.Delay;
-import dewddgravity.Gravity;
-import dewddgravity.MainLoop;
 import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -14,7 +11,11 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class DigEventListener2
+import lowbrain.main.Delay;
+import lowbrain.main.Gravity;
+import lowbrain.main.MainLoop;
+
+public class BlockListener
 implements Listener {
 	public static JavaPlugin ac = null;
 	public static boolean useFixedStrength = false;
@@ -22,18 +23,15 @@ implements Listener {
 	public static double strengthRadius = 5.0;
 	public static int maxTimeToDoJob = 1000;
 	public static int checkingDelayAsTick = 1;
-	
-	private Random rnd = new Random();
+	public static boolean allowDiagonal = false;
 
-	public DigEventListener2() {
+	public BlockListener() {
 		Delay delay = new Delay();
 		Thread th = new Thread(delay);
 		th.start();
-
 	}
 
-	// BlockPlaceEvent
-
+	/*
 	@EventHandler
 	public void eventja(PlayerCommandPreprocessEvent e) {
 		String m[] = e.getMessage().split(" ");
@@ -44,15 +42,18 @@ implements Listener {
 
 			} else if (m.length == 2) {
 				if (m[1].equalsIgnoreCase("reload")) {
-					e.getPlayer().sendMessage("1.2");
+					
 					Bukkit.getScheduler().cancelTasks(ac);
+					EventListener.LoadConfig();
 					Delay delay = new Delay();
 					Thread th = new Thread(delay);
 					th.start();
+					e.getPlayer().sendMessage("MCGravity reloaded!!!");
 				}
 			}
 		}
 	}
+	*/
 
 	@EventHandler
 	public void eventja(BlockBreakEvent e) {
@@ -61,10 +62,13 @@ implements Listener {
 		Block b2 = null;
 
 		int r = Gravity.r;
-		int counter = 0;
 		for (int x = -r; x <= r; x++) {
 			for (int y = -r; y <= r; y++) {
 				for (int z = -r; z <= r; z++) {
+					
+					if(!BlockListener.allowDiagonal && Math.abs(x) + Math.abs(y) + Math.abs(z) > 1){
+						continue;
+					}
 					
 					b2 = block.getWorld().getBlockAt(block.getX() + x, block.getY() + y, block.getZ() + z);
 
@@ -92,6 +96,10 @@ implements Listener {
 			for (int y = -r; y <= r; y++) {
 				for (int z = -r; z <= r; z++) {
 
+					if(!BlockListener.allowDiagonal && Math.abs(x) + Math.abs(y) + Math.abs(z) > 1){
+						continue;
+					}
+					
 					b2 = block.getWorld().getBlockAt(block.getX() + x, block.getY() + y, block.getZ() + z);
 
 					if (Gravity.needBlock(b2) == false) {
@@ -114,21 +122,19 @@ implements Listener {
 		Block b2 = null;
 
 		int r = Gravity.r;
-		int counter = 0;
 		for (int x = -r; x <= r; x++) {
 			for (int y = -r; y <= r; y++) {
 				for (int z = -r; z <= r; z++) {
 
-					// b2 = block.getRelative(x, y, z);
+					if(!BlockListener.allowDiagonal && Math.abs(x) + Math.abs(y) + Math.abs(z) > 1){
+						continue;
+					}
 
 					b2 = block.getWorld().getBlockAt(block.getX() + x, block.getY() + y, block.getZ() + z);
 
 					if (Gravity.needBlock(b2) == false) {
 						continue;
 					}
-
-					// Gravity noop = new Gravity(b2, null, block, counter *
-					// 25);
 					MainLoop.jobs.put(b2.getLocation());
 
 				}
@@ -138,8 +144,16 @@ implements Listener {
 
 	}
 
-	// PlayerDeathEvent
+	public static void LoadConfig(){
+		if(BlockListener.ac != null){
+			BlockListener.useFixedStrength = BlockListener.ac.getConfig().getBoolean("CONFIG_GRAVITY_USE_FIXED_STRENGTH");
+	        BlockListener.useSquareRadius = BlockListener.ac.getConfig().getBoolean("CONFIG_GRAVITY_USE_SQUARE_RADIUS");
+	        BlockListener.maxTimeToDoJob = BlockListener.ac.getConfig().getInt("CONFIG_GRAVITY_MAXTIME_DO_THE_JOB");
+	        BlockListener.strengthRadius = BlockListener.ac.getConfig().getDouble("CONFIG_GRAVITY_STRENGTH_RADIUS");
+	        BlockListener.checkingDelayAsTick = BlockListener.ac.getConfig().getInt("CONFIG_GRAVITY_REPEAT_CHECKING_DELAY_AS_TICK");
+	        BlockListener.allowDiagonal = BlockListener.ac.getConfig().getBoolean("CONFIG_GRAVITY_ALLOW_DIAGONAL");
+		}
+	}
 
-	// PlayerInteractEvent
 }
 
