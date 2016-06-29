@@ -60,8 +60,8 @@ extends JavaPlugin {
     
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-    	if (cmd.getName().equalsIgnoreCase("mcgravity")) { // If the player typed /basic then do the following...
-    		if(args.length == 1 && args[0].equalsIgnoreCase("reload")){
+    	if (cmd.getName().equalsIgnoreCase("mcgravity")) { 
+    		if(args.length > 0 && args[0].equalsIgnoreCase("reload")){
     			Bukkit.getScheduler().cancelTasks(BlockListener.ac);
 				
     			BlockListener.LoadConfig();
