@@ -1,10 +1,10 @@
 main: lowbrain.mcgravity.Main
 name: MCGravity
-version: 1.1a
+version: 1.2.0
 author: Lowbrain, based on DewDD Gravity
 description: Make minecraft more realistic with a new approach of real life gravity
 commands:
-   reload:
+   MCGravity:
       description: Restart MCGravity and reload config file
       usage: /MCGravity reload
       permission: MCGravity.reload
