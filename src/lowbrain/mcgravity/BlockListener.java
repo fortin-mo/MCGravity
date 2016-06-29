@@ -1,14 +1,11 @@
 package lowbrain.mcgravity;
 
-import java.util.Random;
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import lowbrain.mcgravity.Delay;
@@ -30,30 +27,6 @@ implements Listener {
 		Thread th = new Thread(delay);
 		th.start();
 	}
-
-	/*
-	@EventHandler
-	public void eventja(PlayerCommandPreprocessEvent e) {
-		String m[] = e.getMessage().split(" ");
-		
-		if (m[0].equalsIgnoreCase("/gravity")) {
-			if (m.length == 1) {
-				e.getPlayer().sendMessage("/gravity reload");
-
-			} else if (m.length == 2) {
-				if (m[1].equalsIgnoreCase("reload")) {
-					
-					Bukkit.getScheduler().cancelTasks(ac);
-					EventListener.LoadConfig();
-					Delay delay = new Delay();
-					Thread th = new Thread(delay);
-					th.start();
-					e.getPlayer().sendMessage("MCGravity reloaded!!!");
-				}
-			}
-		}
-	}
-	*/
 
 	@EventHandler
 	public void eventja(BlockBreakEvent e) {
@@ -147,11 +120,17 @@ implements Listener {
 	public static void LoadConfig(){
 		if(BlockListener.ac != null){
 			BlockListener.useFixedStrength = BlockListener.ac.getConfig().getBoolean("CONFIG_GRAVITY_USE_FIXED_STRENGTH");
+			BlockListener.ac.getLogger().info("useFixedStrengh = " + BlockListener.useFixedStrength);
 	        BlockListener.useSquareRadius = BlockListener.ac.getConfig().getBoolean("CONFIG_GRAVITY_USE_SQUARE_RADIUS");
+	        BlockListener.ac.getLogger().info("useSquareRadius = " + BlockListener.useSquareRadius);
 	        BlockListener.maxTimeToDoJob = BlockListener.ac.getConfig().getInt("CONFIG_GRAVITY_MAXTIME_DO_THE_JOB");
+	        BlockListener.ac.getLogger().info("maxTimeToDoJob = " + BlockListener.maxTimeToDoJob);
 	        BlockListener.strengthRadius = BlockListener.ac.getConfig().getDouble("CONFIG_GRAVITY_STRENGTH_RADIUS");
+	        BlockListener.ac.getLogger().info("strengthRadius = " + BlockListener.strengthRadius);
 	        BlockListener.checkingDelayAsTick = BlockListener.ac.getConfig().getInt("CONFIG_GRAVITY_REPEAT_CHECKING_DELAY_AS_TICK");
+	        BlockListener.ac.getLogger().info("checkingDelayAsTick = " + BlockListener.checkingDelayAsTick);
 	        BlockListener.allowDiagonal = BlockListener.ac.getConfig().getBoolean("CONFIG_GRAVITY_ALLOW_DIAGONAL");
+	        BlockListener.ac.getLogger().info("allowDiagonal = " + BlockListener.allowDiagonal);
 		}
 	}
 

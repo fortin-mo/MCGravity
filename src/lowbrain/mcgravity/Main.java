@@ -3,9 +3,6 @@ package lowbrain.mcgravity;
 import java.io.File;
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -55,25 +52,9 @@ extends JavaPlugin {
         BlockListener.ac = this;
         BlockListener.LoadConfig();
         
+        this.getCommand("mcgravity").setExecutor(new GravityCommand(this));
+        
         this.getServer().getPluginManager().registerEvents((Listener)this.ax, (Plugin)this);
-    }
-    
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-    	if (cmd.getName().equalsIgnoreCase("mcgravity")) { 
-    		if(args.length > 0 && args[0].equalsIgnoreCase("reload")){
-    			Bukkit.getScheduler().cancelTasks(BlockListener.ac);
-				
-    			BlockListener.LoadConfig();
-				Delay delay = new Delay();
-				Thread th = new Thread(delay);
-				th.start();
-				
-    			sender.sendMessage("MCGravity reloaded !!!");
-    			return true;
-    		}
-    	} 
-    	return false;
     }
 }
 
