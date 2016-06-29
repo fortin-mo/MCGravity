@@ -1,4 +1,4 @@
-package lowbrain.main;
+package lowbrain.mcgravity;
 
 import java.io.File;
 import java.util.logging.Logger;
@@ -11,7 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import lowbrain.main.BlockListener;
+import lowbrain.mcgravity.BlockListener;
 
 public class Main
 extends JavaPlugin {

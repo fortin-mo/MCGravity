@@ -1,10 +1,10 @@
-package lowbrain.main;
+package lowbrain.mcgravity;
 
 import java.util.LinkedList;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
-import lowbrain.main.Gravity;
+import lowbrain.mcgravity.Gravity;
 
 class TheJobType {
 	private LinkedList<Location> loc = new LinkedList<Location>();

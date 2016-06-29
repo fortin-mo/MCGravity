@@ -1,9 +1,9 @@
-package lowbrain.main;
+package lowbrain.mcgravity;
 
 import java.util.LinkedList;
 import org.bukkit.block.Block;
 
-import lowbrain.main.Gravity;
+import lowbrain.mcgravity.Gravity;
 
 class Helper {
 	public static boolean isThisBlockHasRoot(Block cur, Block start, LinkedList<Block> usedList) {

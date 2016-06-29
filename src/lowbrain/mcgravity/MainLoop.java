@@ -1,13 +1,13 @@
 
-package lowbrain.main;
+package lowbrain.mcgravity;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
-import lowbrain.main.BlockListener;
-import lowbrain.main.Gravity;
-import lowbrain.main.TheJobType;
+import lowbrain.mcgravity.BlockListener;
+import lowbrain.mcgravity.Gravity;
+import lowbrain.mcgravity.TheJobType;
 
 class MainLoop
 implements Runnable {

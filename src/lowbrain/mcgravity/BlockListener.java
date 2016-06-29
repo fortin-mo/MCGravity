@@ -1,4 +1,4 @@
-package lowbrain.main;
+package lowbrain.mcgravity;
 
 import java.util.Random;
 import org.bukkit.Bukkit;
@@ -11,9 +11,9 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import lowbrain.main.Delay;
-import lowbrain.main.Gravity;
-import lowbrain.main.MainLoop;
+import lowbrain.mcgravity.Delay;
+import lowbrain.mcgravity.Gravity;
+import lowbrain.mcgravity.MainLoop;
 
 public class BlockListener
 implements Listener {

@@ -1,9 +1,9 @@
-package lowbrain.main;
+package lowbrain.mcgravity;
 
 import org.bukkit.Bukkit;
 
-import lowbrain.main.BlockListener;
-import lowbrain.main.MainLoop;
+import lowbrain.mcgravity.BlockListener;
+import lowbrain.mcgravity.MainLoop;
 
 class Delay
 implements Runnable {

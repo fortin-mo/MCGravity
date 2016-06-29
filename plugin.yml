@@ -1,4 +1,4 @@
-main: lowbrain.main.Main
+main: lowbrain.mcgravity.Main
 name: MCGravity
 version: 1.1a
 author: Lowbrain, based on DewDD Gravity
