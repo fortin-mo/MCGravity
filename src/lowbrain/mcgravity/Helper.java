@@ -6,17 +6,22 @@ import org.bukkit.block.Block;
 import lowbrain.mcgravity.Gravity;
 
 class Helper {
-	public static boolean isThisBlockHasRoot(Block cur, Block start, LinkedList<Block> usedList) {
+	public static boolean isThisBlockHasRoot(Block cur, Block start, LinkedList<Block> usedList, int foundation) {
 
 		Block b2 = null;
-
-		// add allow to usedList
+		/*
+		if(foundation >= BlockListener.foundation)
+		{
+			BlockListener.ac.getLogger().info("DEBUG : is foundation !!");
+			return true;
+		}
+		*/
 
 		if (cur.getY() == 0) {
 			return Gravity.needBlock(cur);
 		}
 
-		for (int y = -Gravity.r; y <= 0; y++) {
+		for (int y = -Gravity.r; y <= Gravity.r; y++) {
 			for (int x = -Gravity.r; x <= Gravity.r; x++) {
 				for (int z = -Gravity.r; z <= Gravity.r; z++) {
 
@@ -24,7 +29,9 @@ class Helper {
 						continue;
 					}
 					
-					b2 = cur.getWorld().getBlockAt(cur.getX() + x, cur.getY() + y, cur.getZ() + z);
+					//b2 = cur.getWorld().getBlockAt(cur.getX() + x, cur.getY() + y, cur.getZ() + z);
+					b2 = cur.getRelative(x,y,z);
+					
 					if (usedList.contains(b2) == true) {
 						continue;
 					}
@@ -61,8 +68,7 @@ class Helper {
 						Gravity.countFailed++;
 						continue;
 					}
-
-					boolean ret = Helper.isThisBlockHasRoot(b2, start, usedList);
+					boolean ret = Helper.isThisBlockHasRoot(b2, start, usedList, foundation += 1);
 
 					if (ret) {
 						Gravity.countDone++;
@@ -76,8 +82,6 @@ class Helper {
 
 			}
 		}
-		// }
-		//dprint.r.printC(cur.getType() + " has no root");
 		return false;
 	}
 
@@ -220,12 +224,10 @@ class Helper {
 			}
 			else {
 				strength = -1;
-				dprint.r.printC("block material : " + cur.getType() + " , strength : " + strength);
 			}
 			*/
 			break;
 		}
-		//dprint.r.printC("block material : " + cur.getType() + " , strength : " + strength);
 		
 		return strength;
 	}

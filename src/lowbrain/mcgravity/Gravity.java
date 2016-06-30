@@ -41,74 +41,8 @@ implements Runnable {
 
 	private Block start;
 
-	private Player player = null;
-
-	private int curDelay = 40;
-
-	public Gravity(Block start, Player player, int curDelay) {
+	public Gravity(Block start) {
 		this.start = start;
-		this.player = player;
-		this.curDelay = curDelay;
-		Random rnd = new Random();
-
-	}
-
-	public void recusiveSearchBlock(Block cur, Block start, LinkedList<Block> list) {
-		// add
-		Block tmp = null;
-		int searchSpace = Gravity.r;
-		for (int x = -searchSpace; x <= searchSpace; x++) {
-
-			for (int z = -searchSpace; z <= searchSpace; z++) {
-				// tmp = cur.getRelative(x, 0, z);
-				tmp = cur.getWorld().getBlockAt(cur.getX() + x, cur.getY(), cur.getZ() + z);
-
-				double xxx = Math.abs(tmp.getX() - start.getX());
-				double zzz = Math.abs(tmp.getZ() - start.getZ());
-
-				double dis = (xxx * xxx) + (zzz * zzz);
-				dis = Math.pow(dis, 0.5);
-
-
-				if ((xxx > Gravity.stick) || (zzz > Gravity.stick)) {
-					continue;
-				}
-
-				if (Gravity.needBlock(tmp) == true) {
-					// open it
-
-					boolean searchChest = false;
-					for (int i = 0; i < list.size(); i++) {
-						Block inList = list.get(i);
-
-						if (tmp.getLocation().getBlockX() == inList.getX()) {
-							if (tmp.getLocation().getBlockY() == inList.getY()) {
-								if (tmp.getLocation().getBlockZ() == inList.getZ()) {
-									searchChest = true;
-									break;
-								}
-							}
-						}
-					}
-					if (searchChest == true) {
-						continue;
-					}
-
-					list.add(tmp);
-
-					// dprint.r.printAll("found block " +
-					// tr.locationToString(tmp.getLocation())
-					// + " size " + list.size());
-
-					// call recursive
-
-					this.recusiveSearchBlock(tmp, start, list);
-
-				} // chest
-			}
-
-		}
-
 	}
 
 	@SuppressWarnings("deprecation")
@@ -138,7 +72,7 @@ implements Runnable {
 
 		LinkedList<Block> list = new LinkedList<Block>();
 
-		boolean found = Helper.isThisBlockHasRoot(this.start, this.start, list);
+		boolean found = Helper.isThisBlockHasRoot(this.start, this.start, list,1);
 
 		long timeUsed = System.currentTimeMillis() - Gravity.startTime;
 		MainLoop.lostTime += timeUsed;
@@ -149,9 +83,6 @@ implements Runnable {
 			this.start.setTypeId(0, true);
 			this.start.getWorld().spawnFallingBlock(this.start.getLocation(), mat, data);
 
-			
-
-			//UsefulFunction.GetBlockStrength(this.start);
 			for (int x = -Gravity.r; x <= Gravity.r; x++) {
 				for (int y = -Gravity.r; y <= Gravity.r; y++) {
 					for (int z = -Gravity.r; z <= Gravity.r; z++) {
@@ -160,8 +91,10 @@ implements Runnable {
 							continue;
 						}
 						
-						b2 = this.start.getWorld().getBlockAt(this.start.getX() + x, this.start.getY() + y,
-								this.start.getZ() + z);
+						//b2 = this.start.getWorld().getBlockAt(this.start.getX() + x, this.start.getY() + y,
+							//	this.start.getZ() + z);
+						
+						b2 = this.start.getRelative(x,y,z);
 
 						if (Gravity.needBlock(b2) == false) {
 							continue;

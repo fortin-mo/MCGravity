@@ -28,16 +28,8 @@ implements Runnable {
 		if (maxTime <= 0) {
 			maxTime = 1000;
 		}
-		/*
-		Gravity.stick = (int) tr.gettrint("CONFIG_GRAVITY_STICKY_RADIUS");
-		if (Gravity.stick <= 0) {
-			Gravity.stick = 5;
-		}*/
 
 		long startTime = System.currentTimeMillis();
-
-		// dprint.r.printAll("Recall " + MainLoop.jobs.getSize() + " " +
-		// MainLoop.lostTime);
 
 		if (MainLoop.lostTime >= maxTime) {
 			MainLoop.lostTime -= maxTime;
@@ -46,19 +38,11 @@ implements Runnable {
 				MainLoop.lostTime = 0;
 			}
 
-			/*
-			 * if (MainLoop.jobs.getSize() > 0) { dprint.r.printAll("(( sleep "
-			 * + MainLoop.jobs.getSize() + " " + MainLoop.lostTime); }
-			 */
 			return;
 		} 
 
 		while (MainLoop.jobs.getSize() > 0 && lostTime < maxTime) {
-			// dprint.r.printAll("done size " + " , " + jobs.getSize());
-			//dprint.r.printC("job size = " + MainLoop.jobs.getSize() + " , losttime = " + lostTime);
 			if (MainLoop.lostTime > maxTime) {
-				// dprint.r.printAll("__ break cuz time out " +
-				// (MainLoop.lostTime));
 				return;
 			}
 
@@ -71,7 +55,7 @@ implements Runnable {
 					continue;
 				}
 
-				Gravity noop = new Gravity(blo, null, 1);
+				Gravity noop = new Gravity(blo);
 				Bukkit.getScheduler().scheduleSyncDelayedTask(BlockListener.ac, noop);
 
 			}

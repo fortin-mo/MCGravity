@@ -52,11 +52,8 @@ class TheJobType {
 		}
 		// search
 		if (this.loc.contains(loc) == false) {
-
 			this.loc.add(loc);
-
 		}
-		// dprint.r.printAll("put new " + MainLoop.jobs.getSize());
 	}
 }
 

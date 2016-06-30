@@ -21,6 +21,7 @@ implements Listener {
 	public static int maxTimeToDoJob = 1000;
 	public static int checkingDelayAsTick = 1;
 	public static boolean allowDiagonal = false;
+	public static int foundation = 16;
 
 	public BlockListener() {
 		Delay delay = new Delay();
@@ -43,8 +44,9 @@ implements Listener {
 						continue;
 					}
 					
-					b2 = block.getWorld().getBlockAt(block.getX() + x, block.getY() + y, block.getZ() + z);
-
+					//b2 = block.getWorld().getBlockAt(block.getX() + x, block.getY() + y, block.getZ() + z);
+					b2 = block.getRelative(x,y,z);
+					
 					if (Gravity.needBlock(b2) == false) {
 						continue;
 					}
@@ -73,8 +75,9 @@ implements Listener {
 						continue;
 					}
 					
-					b2 = block.getWorld().getBlockAt(block.getX() + x, block.getY() + y, block.getZ() + z);
-
+					//b2 = block.getWorld().getBlockAt(block.getX() + x, block.getY() + y, block.getZ() + z);
+					b2 = block.getRelative(x,y,z);
+					
 					if (Gravity.needBlock(b2) == false) {
 						continue;
 					}
@@ -103,8 +106,9 @@ implements Listener {
 						continue;
 					}
 
-					b2 = block.getWorld().getBlockAt(block.getX() + x, block.getY() + y, block.getZ() + z);
-
+					//b2 = block.getWorld().getBlockAt(block.getX() + x, block.getY() + y, block.getZ() + z);
+					b2 = block.getRelative(x,y,z);
+					
 					if (Gravity.needBlock(b2) == false) {
 						continue;
 					}
