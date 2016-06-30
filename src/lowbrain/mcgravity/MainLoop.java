@@ -14,7 +14,7 @@ implements Runnable {
 	public static TheJobType jobs = new TheJobType();
 
 	public static long lostTime = 0;
-	public static long maxTime = 50;
+	public static long maxTime = 1000;
 
 	public MainLoop() {
 
@@ -25,13 +25,8 @@ implements Runnable {
 		// always get Item from jobs
 
 		maxTime = (long) BlockListener.maxTimeToDoJob;
-		if (maxTime <= 0) {
-			maxTime = 1000;
-		}
 
-		long startTime = System.currentTimeMillis();
-
-		if (MainLoop.lostTime >= maxTime) {
+		if (maxTime > 0 && MainLoop.lostTime >= maxTime) {
 			MainLoop.lostTime -= maxTime;
 
 			if (MainLoop.lostTime < 0) {
@@ -41,8 +36,8 @@ implements Runnable {
 			return;
 		} 
 
-		while (MainLoop.jobs.getSize() > 0 && lostTime < maxTime) {
-			if (MainLoop.lostTime > maxTime) {
+		while (MainLoop.jobs.getSize() > 0 && (maxTime < 0 || lostTime < maxTime)) {
+			if (maxTime > 0 && MainLoop.lostTime > maxTime) {
 				return;
 			}
 
@@ -51,7 +46,7 @@ implements Runnable {
 			if (loc != null) {
 
 				Block blo = loc.getBlock();
-				if (Gravity.needBlock(blo) == false) {
+				if (!Helper.needBlock(blo)) {
 					continue;
 				}
 

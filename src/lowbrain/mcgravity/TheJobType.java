@@ -13,7 +13,7 @@ class TheJobType {
 		boolean found = false;
 		Location tmp2 = null;
 
-		while ((found == false) && (this.loc.size() > 0)) {
+		while (!found && this.loc.size() > 0) {
 			
 			Location tmp = this.loc.get(0);
 			this.loc.remove(0);
@@ -22,7 +22,7 @@ class TheJobType {
 				continue;
 			}
 
-			if (Gravity.needBlock(tmp.getBlock()) == false) {
+			if (!Helper.needBlock(tmp.getBlock())) {
 				continue;
 			}
 
@@ -47,11 +47,11 @@ class TheJobType {
 		 * if (blo.getType().isSolid() == false) { return; }
 		 */
 
-		if (Gravity.needBlock(blo) == false) {
+		if (!Helper.needBlock(blo)) {
 			return;
 		}
 		// search
-		if (this.loc.contains(loc) == false) {
+		if (!this.loc.contains(loc)) {
 			this.loc.add(loc);
 		}
 	}

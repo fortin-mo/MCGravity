@@ -5,6 +5,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+/**
+ * Command executor for MCGravity plugin
+ * @author lowbrain
+ *
+ */
 public class GravityCommand implements CommandExecutor{
 
 	private final lowbrain.mcgravity.Main plugin;
@@ -13,7 +18,9 @@ public class GravityCommand implements CommandExecutor{
 		this.plugin = plugin;
 	}
 	
-	
+	/**
+	 * Called when the plugin receice a command
+	 */
 	@Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     	sender.sendMessage("executing mcgravity reload");

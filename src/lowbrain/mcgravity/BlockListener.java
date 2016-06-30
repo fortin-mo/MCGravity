@@ -40,14 +40,17 @@ implements Listener {
 			for (int y = -r; y <= r; y++) {
 				for (int z = -r; z <= r; z++) {
 					
+					if(x == 0 && y == 0 && z == 0){
+						continue;
+					}
+					
 					if(!BlockListener.allowDiagonal && Math.abs(x) + Math.abs(y) + Math.abs(z) > 1){
 						continue;
 					}
 					
-					//b2 = block.getWorld().getBlockAt(block.getX() + x, block.getY() + y, block.getZ() + z);
 					b2 = block.getRelative(x,y,z);
 					
-					if (Gravity.needBlock(b2) == false) {
+					if (!Helper.needBlock(b2)) {
 						continue;
 					}
 					MainLoop.jobs.put(b2.getLocation());
@@ -71,14 +74,17 @@ implements Listener {
 			for (int y = -r; y <= r; y++) {
 				for (int z = -r; z <= r; z++) {
 
+					if(x == 0 && y == 0 && z == 0){
+						continue;
+					}
+					
 					if(!BlockListener.allowDiagonal && Math.abs(x) + Math.abs(y) + Math.abs(z) > 1){
 						continue;
 					}
 					
-					//b2 = block.getWorld().getBlockAt(block.getX() + x, block.getY() + y, block.getZ() + z);
 					b2 = block.getRelative(x,y,z);
 					
-					if (Gravity.needBlock(b2) == false) {
+					if (!Helper.needBlock(b2)) {
 						continue;
 					}
 
@@ -102,14 +108,17 @@ implements Listener {
 			for (int y = -r; y <= r; y++) {
 				for (int z = -r; z <= r; z++) {
 
+					if(x == 0 && y == 0 && z == 0){
+						continue;
+					}
+					
 					if(!BlockListener.allowDiagonal && Math.abs(x) + Math.abs(y) + Math.abs(z) > 1){
 						continue;
 					}
 
-					//b2 = block.getWorld().getBlockAt(block.getX() + x, block.getY() + y, block.getZ() + z);
 					b2 = block.getRelative(x,y,z);
 					
-					if (Gravity.needBlock(b2) == false) {
+					if (!Helper.needBlock(b2)) {
 						continue;
 					}
 					MainLoop.jobs.put(b2.getLocation());

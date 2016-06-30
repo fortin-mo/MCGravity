@@ -10,17 +10,28 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import lowbrain.mcgravity.BlockListener;
 
+/**
+ * Main plugin class
+ * @author lowbrain
+ *
+ */
 public class Main
 extends JavaPlugin {
     Logger log; 
     BlockListener ax = new BlockListener();
 
+    /**
+     * called when the plugin is being disabled
+     */
     @Override
     public void onDisable() {
         this.getServer().getPluginManager().disablePlugin((Plugin)this);
         
     }
     
+    /**
+     * Called when the plugin is first enabled
+     */
     @Override
     public void onEnable() {
        

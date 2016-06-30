@@ -1,11 +1,27 @@
 package lowbrain.mcgravity;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
-import org.bukkit.block.Block;
+import java.util.List;
 
+import org.bukkit.block.Block;
 import lowbrain.mcgravity.Gravity;
 
+/**
+ * Helper class for needed functions
+ * @author lowbrain
+ *
+ */
 class Helper {
+	
+	/**
+	 * Check if the current block has root (connected to a block in his strength radius)
+	 * @param cur current block
+	 * @param start starting block
+	 * @param usedList list of already checked block
+	 * @param foundation not yet implemented
+	 * @return
+	 */
 	public static boolean isThisBlockHasRoot(Block cur, Block start, LinkedList<Block> usedList, int foundation) {
 
 		Block b2 = null;
@@ -18,7 +34,7 @@ class Helper {
 		*/
 
 		if (cur.getY() == 0) {
-			return Gravity.needBlock(cur);
+			return Helper.needBlock(cur);
 		}
 
 		for (int y = -Gravity.r; y <= Gravity.r; y++) {
@@ -29,10 +45,9 @@ class Helper {
 						continue;
 					}
 					
-					//b2 = cur.getWorld().getBlockAt(cur.getX() + x, cur.getY() + y, cur.getZ() + z);
 					b2 = cur.getRelative(x,y,z);
 					
-					if (usedList.contains(b2) == true) {
+					if (usedList.contains(b2)) {
 						continue;
 					}
 
@@ -55,7 +70,6 @@ class Helper {
 					else{
 						double dis = Math.pow((xxx * xxx) + (zzz * zzz),0.5);
 						
-						
 						if(dis > strength){
 							Gravity.countFailed++;
 							continue;
@@ -64,13 +78,13 @@ class Helper {
 
 					usedList.add(b2);
 
-					if (!Gravity.needBlock(b2)) {
+					if (!Helper.needBlock(b2)) {
 						Gravity.countFailed++;
 						continue;
 					}
-					boolean ret = Helper.isThisBlockHasRoot(b2, start, usedList, foundation += 1);
+					boolean found = Helper.isThisBlockHasRoot(b2, start, usedList, foundation += 1);
 
-					if (ret) {
+					if (found) {
 						Gravity.countDone++;
 						return true;
 					} else {
@@ -85,11 +99,16 @@ class Helper {
 		return false;
 	}
 
-	public static int GetBlockStrength(Block cur){
+	/**
+	 * return the block's strength depending his material
+	 * @param block
+	 * @return
+	 */
+	public static double GetBlockStrength(Block block){
 		int strength = -1;
 		
 		
-		switch (cur.getType()) {
+		switch (block.getType()) {
 		//none
 		
 		case CHORUS_FLOWER:
@@ -218,18 +237,99 @@ class Helper {
 			
 		default:
 			strength = 5;
-			/*
-			if(cur.getType().isSolid()){
-				strength = 5;
-			}
-			else {
-				strength = -1;
-			}
-			*/
 			break;
 		}
 		
-		return strength;
+		return strength * getBlockStrengthMultiplier(block);
+	}
+
+	/**
+	 * return the block strength multiplier
+	 * @param block
+	 * @return
+	 */
+	private static double getBlockStrengthMultiplier(Block block){		
+		double multiplier = 1; //if you build a 4x4 block it will make it stronger
+		
+		List<Block> nearBlocks = new ArrayList<Block>();//list of none water,air,lava blocks that are in the range of the current block
+		Block b2 = null;
+		for (int y = -1; y <= 1 ; y++) {//only the blocks above and under and on the same level can make a difference
+			for (int x = -3; x <= 3; x++) {//3x3 because we could go till the end, but except slowing shits down it wont change much
+				for (int z = -3; z <= 3; z++) {//3x3 because we could go till the end, but except slowing shits down it wont change much
+					if(x == 0 && y == 0 && z == 0){//current block
+						continue;
+					}
+					b2 =  block.getRelative(x,y,z);
+					if(b2 != null && Helper.needBlock(b2)){
+						nearBlocks.add(b2);
+					}
+				}
+			}
+		}
+		
+		int dx;//distance X
+		int dy;//distance Y
+		int dz;//distance Z
+		//check if near blocks are at least connected to two other near blocks
+		//if not, they won't be taking in account for the multiplier
+		for (int i = 0; i < nearBlocks.size(); i++) {
+			Block current = nearBlocks.get(i);
+			int countConnected = 0;
+			for (int j = 0; j < nearBlocks.size(); j++) {
+				if(i == j) continue;//we don't want compare the same block
+				Block next = nearBlocks.get(j);
+				
+				dx = Math.abs(current.getX() - next.getX());
+				dy = Math.abs(current.getY() - next.getY());
+				dz = Math.abs(current.getZ() - next.getZ());
+				
+				if(Math.abs(dx + dy + dz) != 1){
+					continue;
+				}
+				countConnected += 1;
+			}
+			if(countConnected >= 2) multiplier += 0.1;//only taking in account blocks that are connected to at least two other
+		}
+
+		return multiplier;
+	}
+
+	/**
+	 * Check if the block is made of water, lava or air
+	 * @param block
+	 * @return if the block is made of water, lava or air, return false otherwise return true;
+	 */
+	public static boolean needBlock(Block block) {
+		switch (block.getType()) {
+		case STATIONARY_WATER:
+		case WATER:
+		case STATIONARY_LAVA:
+		case LAVA:
+		case AIR:
+			// case STAINED_GLASS_PANE:
+			return false;
+		default:
+			return true;
+		}
+
+	}
+
+	/**
+	 * Return the list of relative position(direction/sense) of the block's joint
+	 * @param block
+	 * @return
+	 */
+	public static List<RelativePosition> isThisBlockJoint(Block block){
+		List<RelativePosition> lst = new ArrayList<RelativePosition>();
+		for (int x = -Gravity.r; x < Gravity.r; x++) {
+			for (int z = -Gravity.r; z < Gravity.r; z++) {
+				if(Helper.needBlock(block.getRelative(x,0,z)) && Helper.needBlock(block.getRelative(x,-1,z))){
+					//is anchar at this face
+					lst.add(new RelativePosition(x,0,z));
+				}
+			}
+		}
+		return lst;
 	}
 }
 
