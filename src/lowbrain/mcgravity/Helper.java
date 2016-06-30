@@ -270,10 +270,17 @@ class Helper {
 		int dx;//distance X
 		int dy;//distance Y
 		int dz;//distance Z
+		List<ArrayList<Block>> connectedBlocks = new ArrayList<ArrayList<Block>>();
+		
 		//check if near blocks are at least connected to two other near blocks
 		//if not, they won't be taking in account for the multiplier
 		for (int i = 0; i < nearBlocks.size(); i++) {
+			
+			List<Block> tmpConnected = new ArrayList<Block>();
+			
 			Block current = nearBlocks.get(i);
+			tmpConnected.add(current);
+			
 			int countConnected = 0;
 			for (int j = 0; j < nearBlocks.size(); j++) {
 				if(i == j) continue;//we don't want compare the same block
@@ -287,10 +294,45 @@ class Helper {
 					continue;
 				}
 				countConnected += 1;
+				tmpConnected.add(next);
 			}
-			if(countConnected >= 2) multiplier += 0.1;//only taking in account blocks that are connected to at least two other
+			if(countConnected >= 2) {
+				if(connectedBlocks.size() == 0){
+					connectedBlocks.add(new ArrayList<Block>());
+					connectedBlocks.get(0).add(current);
+				}
+				else{
+					for (int j = 0; j < connectedBlocks.size(); j++) {
+						if(connectedBlocks.get(j).contains(current)){
+							
+						}
+						else{
+							
+						}
+					}
+				}
+			}
 		}
-
+		
+		//For each group of connected blocks, we need at least one of them to be directly attached to the main block
+		for (int i = 0; i < connectedBlocks.size(); i++) {
+			boolean connected = false;
+		
+			for (int j = 0; j < connectedBlocks.get(i).size(); j++) {
+				Block current = connectedBlocks.get(i).get(j);
+				
+				dx = Math.abs(block.getX() - current.getX());
+				dy = Math.abs(block.getY() - current.getY());
+				dz = Math.abs(block.getZ() - current.getZ());
+				
+				if(Math.abs(dx + dy + dz) == 1){
+					connected = true;
+					continue;
+				}
+			}
+			if(connected) multiplier += connectedBlocks.get(i).size() * 0.1;
+		}
+		
 		return multiplier;
 	}
 
