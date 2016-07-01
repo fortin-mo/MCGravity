@@ -65,9 +65,9 @@ implements Runnable {
 				for (int y = -Gravity.r; y <= Gravity.r; y++) {
 					for (int z = -Gravity.r; z <= Gravity.r; z++) {
 						
-						if(x == 0 && y == 0 && z == 0){
-							continue;
-						}
+						//if(x == 0 && y == 0 && z == 0){
+						//	continue;
+						//}
 						
 						if(!BlockListener.allowDiagonal && Math.abs(x) + Math.abs(y) + Math.abs(z) > 1){
 							continue;

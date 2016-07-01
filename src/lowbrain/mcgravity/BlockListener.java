@@ -40,9 +40,9 @@ implements Listener {
 			for (int y = -r; y <= r; y++) {
 				for (int z = -r; z <= r; z++) {
 					
-					if(x == 0 && y == 0 && z == 0){
-						continue;
-					}
+					//if(x == 0 && y == 0 && z == 0){
+					//	continue;
+					//}
 					
 					if(!BlockListener.allowDiagonal && Math.abs(x) + Math.abs(y) + Math.abs(z) > 1){
 						continue;
@@ -74,9 +74,9 @@ implements Listener {
 			for (int y = -r; y <= r; y++) {
 				for (int z = -r; z <= r; z++) {
 
-					if(x == 0 && y == 0 && z == 0){
-						continue;
-					}
+					//if(x == 0 && y == 0 && z == 0){
+					//	continue;
+					//}
 					
 					if(!BlockListener.allowDiagonal && Math.abs(x) + Math.abs(y) + Math.abs(z) > 1){
 						continue;
@@ -108,9 +108,9 @@ implements Listener {
 			for (int y = -r; y <= r; y++) {
 				for (int z = -r; z <= r; z++) {
 
-					if(x == 0 && y == 0 && z == 0){
-						continue;
-					}
+					//if(x == 0 && y == 0 && z == 0){
+					//	continue;
+					//}
 					
 					if(!BlockListener.allowDiagonal && Math.abs(x) + Math.abs(y) + Math.abs(z) > 1){
 						continue;

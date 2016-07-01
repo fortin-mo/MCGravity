@@ -240,7 +240,7 @@ class Helper {
 			break;
 		}
 		
-		return strength * getBlockStrengthMultiplier(block);
+		return strength;// * getBlockStrengthMultiplier(block);
 	}
 
 	/**
