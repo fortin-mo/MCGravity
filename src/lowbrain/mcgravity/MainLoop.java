@@ -36,11 +36,13 @@ implements Runnable {
 			return;
 		} 
 
+		
+		
 		while (MainLoop.jobs.getSize() > 0 && (maxTime < 0 || lostTime < maxTime)) {
 			if (maxTime > 0 && MainLoop.lostTime > maxTime) {
 				return;
 			}
-
+			//BlockListener.ac.getLogger().info("Losttime " + MainLoop.lostTime );
 			Location loc = MainLoop.jobs.get();
 
 			if (loc != null) {
@@ -56,9 +58,7 @@ implements Runnable {
 			}
 
 		}
-		
-		
-
+		if(MainLoop.jobs.getSize() <= 0) MainLoop.lostTime = 0;
 	}
 }
 

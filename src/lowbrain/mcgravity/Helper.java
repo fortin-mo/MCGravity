@@ -240,7 +240,7 @@ class Helper {
 			break;
 		}
 		
-		return strength;// * getBlockStrengthMultiplier(block);
+		return strength * getBlockStrengthMultiplier(block);
 	}
 
 	/**
@@ -267,52 +267,9 @@ class Helper {
 			}
 		}
 		
-		int dx;//distance X
-		int dy;//distance Y
-		int dz;//distance Z
-		List<ArrayList<Block>> connectedBlocks = new ArrayList<ArrayList<Block>>();
 		
-		//check if near blocks are at least connected to two other near blocks
-		//if not, they won't be taking in account for the multiplier
-		for (int i = 0; i < nearBlocks.size(); i++) {
-			
-			List<Block> tmpConnected = new ArrayList<Block>();
-			
-			Block current = nearBlocks.get(i);
-			tmpConnected.add(current);
-			
-			int countConnected = 0;
-			for (int j = 0; j < nearBlocks.size(); j++) {
-				if(i == j) continue;//we don't want compare the same block
-				Block next = nearBlocks.get(j);
-				
-				dx = Math.abs(current.getX() - next.getX());
-				dy = Math.abs(current.getY() - next.getY());
-				dz = Math.abs(current.getZ() - next.getZ());
-				
-				if(Math.abs(dx + dy + dz) != 1){
-					continue;
-				}
-				countConnected += 1;
-				tmpConnected.add(next);
-			}
-			if(countConnected >= 2) {
-				if(connectedBlocks.size() == 0){
-					connectedBlocks.add(new ArrayList<Block>());
-					connectedBlocks.get(0).add(current);
-				}
-				else{
-					for (int j = 0; j < connectedBlocks.size(); j++) {
-						if(connectedBlocks.get(j).contains(current)){
-							
-						}
-						else{
-							
-						}
-					}
-				}
-			}
-		}
+		List<ArrayList<Block>> connectedBlocks = groupConnectedBlocks(nearBlocks);
+		
 		
 		//For each group of connected blocks, we need at least one of them to be directly attached to the main block
 		for (int i = 0; i < connectedBlocks.size(); i++) {
@@ -321,21 +278,85 @@ class Helper {
 			for (int j = 0; j < connectedBlocks.get(i).size(); j++) {
 				Block current = connectedBlocks.get(i).get(j);
 				
-				dx = Math.abs(block.getX() - current.getX());
-				dy = Math.abs(block.getY() - current.getY());
-				dz = Math.abs(block.getZ() - current.getZ());
-				
-				if(Math.abs(dx + dy + dz) == 1){
+				if(Helper.areTheseBlockFaced(block, current)){
 					connected = true;
 					continue;
 				}
 			}
 			if(connected) multiplier += connectedBlocks.get(i).size() * 0.1;
 		}
-		
+		//BlockListener.ac.getLogger().info("multiplier =  " + multiplier );
 		return multiplier;
 	}
 
+	/**
+	 * Take the near blocks list and regroup blocks that are connected to each other
+	 * @param nearBlocks
+	 * @return
+	 */
+	public static List<ArrayList<Block>> groupConnectedBlocks(List<Block> nearBlocks){
+
+		long startTime = System.currentTimeMillis();
+		
+		List<ArrayList<Block>> connectedBlocks = new ArrayList<ArrayList<Block>>();
+		
+		for (int currentIndex = 0; currentIndex < nearBlocks.size(); currentIndex++) {
+			
+			Block current = nearBlocks.get(currentIndex);//the block that we are currently checking
+			
+			List<Block> tmp = new ArrayList<Block>(); //a temporary list of other block that are connected to the current one
+			for (int i = 0; i < nearBlocks.size(); i++) {
+				if(i == currentIndex) continue;//no need to check the same block
+				Block b2 = nearBlocks.get(i);
+				if(Helper.areTheseBlockFaced(current, b2)){//if the second block is connected to the current one, we add it to the temporary list
+					tmp.add(b2);
+				}
+			}
+			
+			if(tmp.size() > 2){ //we beed at least 3 connection to be valid
+				
+				if(connectedBlocks.size() == 0){//list is empty so we add the first one
+					connectedBlocks.add(new ArrayList<Block>());
+					connectedBlocks.get(0).add(current);
+				}
+				else{
+					boolean linked = false;
+					//we check if one off the connected block is already in a group... if so we add the current one to that same list. they are now regrouped
+					for (int i = 0; i < connectedBlocks.size(); i++) {
+						for (int j = 0; j < tmp.size(); j++) {
+							if(connectedBlocks.get(i).contains(tmp.get(j))){
+								connectedBlocks.get(i).add(current);
+								break;
+							}
+						}
+					}
+					if(!linked){//if not we create a new group for that block
+						connectedBlocks.add(new ArrayList<Block>());
+						connectedBlocks.get(connectedBlocks.size() -1 ).add(current);
+					}
+					
+				}
+			}
+			
+		}
+		
+		long elapsed = System.currentTimeMillis() - startTime;
+			
+		return connectedBlocks;
+	}
+	
+	public static boolean areTheseBlockFaced(Block b1, Block b2){
+		int dx;//distance X
+		int dy;//distance Y
+		int dz;//distance Z
+		
+		dx = Math.abs(b1.getX() - b2.getX());
+		dy = Math.abs(b1.getY() - b2.getY());
+		dz = Math.abs(b1.getZ() - b2.getZ());
+		
+		return Math.abs(dx + dy + dz) == 1;
+	}
+	
 	/**
 	 * Check if the block is made of water, lava or air
 	 * @param block

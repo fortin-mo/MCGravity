@@ -31,7 +31,7 @@ implements Runnable {
 		Gravity.countFailed = 0;
 		Gravity.countDone = 0;
 
-		if (MainLoop.lostTime > MainLoop.maxTime) {
+		if (MainLoop.maxTime > 0 && MainLoop.lostTime > MainLoop.maxTime) {
 			return;
 		}
 		// check it's has near block or not
