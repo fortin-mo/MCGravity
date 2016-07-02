@@ -1,6 +1,6 @@
 main: lowbrain.mcgravity.Main
 name: MCGravity
-version: 1.2.0
+version: 1.3.0
 author: Lowbrain, based on DewDD Gravity
 description: Make minecraft more realistic with a new approach of real life gravity
 commands:

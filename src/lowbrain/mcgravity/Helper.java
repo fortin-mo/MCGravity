@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang.mutable.Mutable;
+import org.apache.commons.lang.mutable.MutableInt;
 import org.bukkit.block.Block;
 import lowbrain.mcgravity.Gravity;
 
@@ -240,11 +242,14 @@ class Helper {
 			break;
 		}
 		
-		return strength * getBlockStrengthMultiplier(block);
+		if(BlockListener.useStrengthMultiplier) strength *= getBlockStrengthMultiplierV2(block);
+		
+		return strength;
+		//return strength * getBlockStrengthMultiplier(block);
 	}
 
 	/**
-	 * return the block strength multiplier
+	 * return the block strength multiplier... old
 	 * @param block
 	 * @return
 	 */
@@ -289,6 +294,101 @@ class Helper {
 		return multiplier;
 	}
 
+	/**
+	 * new version : return the block strength multiplier
+	 * @param block
+	 * @return
+	 */
+	private static double getBlockStrengthMultiplierV2(Block block){			
+		double multiplier = 1;
+		
+		List<RelativePosition> lstFaces = new ArrayList<RelativePosition>();
+		lstFaces.add(new RelativePosition(1,0,0));//right
+		lstFaces.add(new RelativePosition(-1,0,0));//left
+		lstFaces.add(new RelativePosition(0,1,0));//top
+		lstFaces.add(new RelativePosition(0,-1,0));//bottom
+		lstFaces.add(new RelativePosition(0,0,1));//front
+		lstFaces.add(new RelativePosition(0,0,-1));//back
+		
+		int maxY = 1;
+		int maxX = 3;
+		int maxZ = 3;
+		
+		MutableInt sum = new MutableInt(0);
+		ArrayList<Block> watchList = new ArrayList<Block>();
+		
+		for (int i = 0; i < lstFaces.size(); i++) {
+			RelativePosition pos = lstFaces.get(i);
+			Block b2 = block.getRelative(pos.getX(),pos.getY(),pos.getZ());
+			if(!Helper.needBlock(b2)) continue;
+			
+			recursiveSearch(sum, watchList,maxY,maxX,maxZ, block, b2);
+		}
+		
+		multiplier += sum.intValue() * BlockListener.strengthMultiplier;
+		//BlockListener.ac.getLogger().info("multiplier =  " + multiplier );
+		return multiplier;
+	}
+	
+	/**
+	 * recursive function for block strength multiplier... check connection between blocks
+	 * @param sum amount of block with more then 1 connection
+	 * @param watchList list of already watched block
+	 * @param maxY max y
+	 * @param maxX max x
+	 * @param maxZ max z
+	 * @param start starting block
+	 * @param b1 next block
+	 */
+	private static void recursiveSearch(MutableInt sum,ArrayList<Block> watchList,int maxY, int maxX, int maxZ, Block start, Block b1){
+		
+		watchList.add(b1);
+		
+		int count = 0;
+		
+		for (int x = -1; x <= 1; x++) {
+			for (int y = -1; y <= 1; y++) {
+				for (int z = -1; z <= 1; z++) {
+					
+					if(x == 0 && y == 0 && z == 0) continue;
+					
+					if(Math.abs(x) + Math.abs(y) + Math.abs(z) > 1){
+						continue;
+					}
+					
+					Block b2 = b1.getRelative(x,y,z);
+					
+					if(!needBlock(b2)) continue;
+					
+					if(watchList.contains(b2)){
+						count += 1;
+						continue;
+					}
+					
+					int dx = Math.abs(start.getX() - b2.getX());
+					int dy = Math.abs(start.getY() - b2.getY());
+					int dz = Math.abs(start.getZ() - b2.getZ());
+					
+					if(dx >= maxX || dy >= maxY || dz >= maxZ){
+						continue;
+					}
+					if(dx == 0 && dy == 0 && dz == 0) {
+						count += 1;
+						continue;
+					}	
+					
+					count += 1;
+					
+					recursiveSearch(sum,watchList, maxY, maxX, maxZ, start, b2);
+				}
+			}
+		}
+		
+		if(count >= 2){
+			sum.increment();
+		}
+	}
+	
 	/**
 	 * Take the near blocks list and regroup blocks that are connected to each other
 	 * @param nearBlocks

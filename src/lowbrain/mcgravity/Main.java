@@ -50,6 +50,8 @@ extends JavaPlugin {
                 config.addDefault("CONFIG_GRAVITY_USE_FIXED_STRENGTH", (Object)false);
                 config.addDefault("CONFIG_GRAVITY_USE_SQUARE_RADIUS", (Object)false);
                 config.addDefault("CONFIG_GRAVITY_ALLOW_DIAGONAL", (Object)true);
+                config.addDefault("CONFIG_GRAVITY_USE_STRENGTH_MULTIPLIER", (Object)true);
+                config.addDefault("CONFIG_GRAVITY_STRENGTH_MULTIPLIER", (Object)0.25);
                 config.options().copyDefaults(true);
                 this.saveConfig();
             } else {

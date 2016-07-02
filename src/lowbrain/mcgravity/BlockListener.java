@@ -22,6 +22,8 @@ implements Listener {
 	public static int checkingDelayAsTick = 1;
 	public static boolean allowDiagonal = false;
 	public static int foundation = 16;
+	public static double strengthMultiplier = 0.25;
+	public static boolean useStrengthMultiplier = true;
 
 	public BlockListener() {
 		Delay delay = new Delay();
@@ -143,7 +145,11 @@ implements Listener {
 	        BlockListener.checkingDelayAsTick = BlockListener.ac.getConfig().getInt("CONFIG_GRAVITY_REPEAT_CHECKING_DELAY_AS_TICK");
 	        BlockListener.ac.getLogger().info("checkingDelayAsTick = " + BlockListener.checkingDelayAsTick);
 	        BlockListener.allowDiagonal = BlockListener.ac.getConfig().getBoolean("CONFIG_GRAVITY_ALLOW_DIAGONAL");
-	        BlockListener.ac.getLogger().info("allowDiagonal = " + BlockListener.allowDiagonal);
+	        BlockListener.ac.getLogger().info("allowDiagonal = " + BlockListener.allowDiagonal); 
+	        BlockListener.useStrengthMultiplier = BlockListener.ac.getConfig().getBoolean("CONFIG_GRAVITY_USE_STRENGTH_MULTIPLIER");
+	        BlockListener.ac.getLogger().info("useStrengthMultiplier = " + BlockListener.useStrengthMultiplier);
+	        BlockListener.strengthMultiplier = BlockListener.ac.getConfig().getInt("CONFIG_GRAVITY_STRENGTH_MULTIPLIER");
+	        BlockListener.ac.getLogger().info("strengthMultiplier = " + BlockListener.strengthMultiplier);
 		}
 	}
 
