@@ -148,7 +148,7 @@ implements Listener {
 	        BlockListener.ac.getLogger().info("allowDiagonal = " + BlockListener.allowDiagonal); 
 	        BlockListener.useStrengthMultiplier = BlockListener.ac.getConfig().getBoolean("CONFIG_GRAVITY_USE_STRENGTH_MULTIPLIER");
 	        BlockListener.ac.getLogger().info("useStrengthMultiplier = " + BlockListener.useStrengthMultiplier);
-	        BlockListener.strengthMultiplier = BlockListener.ac.getConfig().getInt("CONFIG_GRAVITY_STRENGTH_MULTIPLIER");
+	        BlockListener.strengthMultiplier = BlockListener.ac.getConfig().getDouble("CONFIG_GRAVITY_STRENGTH_MULTIPLIER");
 	        BlockListener.ac.getLogger().info("strengthMultiplier = " + BlockListener.strengthMultiplier);
 		}
 	}
