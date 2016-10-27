@@ -4,6 +4,7 @@
         <mkdir dir="target"></mkdir>
         <jar destfile="target/${ant.project.name}.jar">
             <fileset dir="bin"></fileset>
+            <fileset dir="resources"></fileset>
             <fileset file="plugin.yml"></fileset>
         </jar>
     </target>

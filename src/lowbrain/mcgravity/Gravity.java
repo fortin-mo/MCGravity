@@ -1,11 +1,8 @@
 package lowbrain.mcgravity;
 
 import java.util.LinkedList;
-import java.util.Random;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-
 import lowbrain.mcgravity.Helper;
 import lowbrain.mcgravity.MainLoop;
 

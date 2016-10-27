@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.lang.mutable.Mutable;
 import org.apache.commons.lang.mutable.MutableInt;
 import org.bukkit.block.Block;
 import lowbrain.mcgravity.Gravity;
@@ -107,143 +106,10 @@ class Helper {
 	 * @return
 	 */
 	public static double GetBlockStrength(Block block){
-		int strength = -1;
-		
-		
-		switch (block.getType()) {
-		//none
-		
-		case CHORUS_FLOWER:
-		case YELLOW_FLOWER:
-		case CHORUS_PLANT:
-		case DOUBLE_PLANT:
-		case LONG_GRASS:
-		case BROWN_MUSHROOM:
-		case RED_MUSHROOM:
-		case SUGAR_CANE_BLOCK:
-		case SEEDS:
-		case MELON_SEEDS:
-		case BEETROOT_SEEDS:
-		case PUMPKIN_SEEDS:
-		case SAPLING:
-		case RED_ROSE:
-		case NETHER_WARTS:
-		case CARROT:
-		case POTATO:
-		case WATER_LILY:
-		case MELON_STEM:
-		case PUMPKIN_STEM:
-		case WHEAT:
-		case SUGAR_CANE:
-		case DEAD_BUSH:
-			strength = -1;
-			break;
-		
-		//weakest
-		
-		case LEAVES:
-		case LEAVES_2:
-			strength = 3;
-			break;
-		
-		//low strength
-		case DIRT:
-		case GRASS:
-		case GRASS_PATH:
-			strength = 4;
-			break;
-			
-		case LAPIS_BLOCK:
-			strength = 4;
-			break;
-			
-		case CLAY:
-			strength = 5;
-			break;
-			
-		case ICE:
-		case FROSTED_ICE:
-			strength = 5;
-			break;
-		
-		//medium low strength
-			
-		case GOLD_ORE:
-		case EMERALD_ORE:
-		case DIAMOND_ORE:
-		case COAL_ORE:
-		case GLOWING_REDSTONE_ORE:
-		case IRON_ORE:
-		case LAPIS_ORE:
-		case QUARTZ_ORE:
-		case REDSTONE_ORE:
-			strength = 6;
-			break;		
-			
-		case WOOD:
-			strength = 6;
-			break;
-		
-		//somehow strong
-		
-		case HARD_CLAY:
-		case STAINED_CLAY:
-			strength = 7;
-			break;
-			
-		case COBBLESTONE:
-		case GLOWSTONE:
-		case SANDSTONE:
-		case RED_SANDSTONE:
-			strength = 8;
-			break;
-				
-		//Strong	
-			
-		case STONE:
-		case STONE_SLAB2:
-		case DOUBLE_STONE_SLAB2:
-		case ENDER_STONE:
-			strength = 10;
-			break;
-			
-		case LOG:
-		case LOG_2:
-			strength = 10;
-			break;
-			
-		case BRICK:
-		case SMOOTH_BRICK:
-		case END_BRICKS:
-		case RED_NETHER_BRICK:
-		case NETHER_BRICK:
-			strength = 12;
-			break;
-			
-		//Strongest blocks
-			
-		case IRON_BLOCK:
-		case BED_BLOCK:
-		case EMERALD_BLOCK:
-		case GOLD_BLOCK:
-		case DIAMOND_BLOCK:
-		case OBSIDIAN:
-		case QUARTZ_BLOCK:
-			strength = 15;
-			break;
-			
-		//bedrock lol
-		case BEDROCK:
-			strength = 256;
-			break;
-			
-		default:
-			strength = 5;
-			break;
-		}
-		
+        double strength = BlockListener.blockStrength.getOrDefault(block.getType().name(), BlockListener.strengthRadius);
+
 		if(BlockListener.useStrengthMultiplier) strength *= getBlockStrengthMultiplierV2(block);
-		
+
 		return strength;
 		//return strength * getBlockStrengthMultiplier(block);
 	}

@@ -1,0 +1,106 @@
+# maximum time to get the job done
+# if job is not done in the amount of time given, process will wait for 5 ticks before continuing
+MAXTIME_DO_THE_JOB: 1000
+
+# amount of tick between each time the precess check for changes
+REPEAT_CHECKING_DELAY_AS_TICK: 5
+
+# default strength radius is the amount of blocks before it starts collapsing
+STRENGTH_RADIUS: 5
+
+# disable fixed strength if you dont want to use different strength for each block
+USE_FIXED_STRENGTH: false
+
+# enable square radius. distance will be mesure on x and y mean a strength of 5 give you 10 * 10 radius
+USE_SQUARE_RADIUS: false
+
+# allow blocks to be placed in diagonal (no directly connected)
+ALLOW_DIAGONAL: false
+
+# enable strength multiplier
+# the larger you build the stronger it gets
+USE_STRENGTH_MULTIPLIER: true
+STRENGTH_MULTIPLIER: 0.15
+
+# enable world will be affect
+# if empty will only use blacklist
+WHITELIST_WORLD:
+
+# disable world
+# like the default config, you can use regex.
+# for exemple, in the default config, all nether world and end world are disabled
+BLACKLIST_WORLD:
+ - ^.{0,}_nether$
+ - ^.{0,}_the_end$
+
+# customize block strength
+# -1 means no strenght at all
+# use real block name in upper case.. if not found will use default strength set earlier
+BLOCKS_STRENGTH:
+ CHORUS_FLOWER: -1
+ YELLOW_FLOWER: -1
+ CHORUS_PLANT: -1
+ DOUBLE_PLANT: -1
+ LONG_GRASS: -1
+ BROWN_MUSHROOM: -1
+ RED_MUSHROOM: -1
+ SUGAR_CANE_BLOCK: -1
+ SEEDS: -1
+ MELON_SEEDS: -1
+ BEETROOT_SEEDS: -1
+ PUMPKIN_SEEDS: -1
+ SAPLING: -1
+ RED_ROSE: -1
+ NETHER_WARTS: -1
+ CARROT: -1
+ POTATO: -1
+ WATER_LILY: -1
+ MELON_STEM: -1
+ PUMPKIN_STEM: -1
+ WHEAT: -1
+ SUGAR_CANE: -1
+ DEAD_BUSH: -1
+ LEAVES: 3
+ LEAVES_2: 3
+ DIRT:
+ GRASS:
+ GRASS_PATH: 4
+ LAPIS_BLOCK: 4
+ CLAY: 5
+ ICE: 5
+ FROSTED_ICE: 5
+ GOLD_ORE: 6
+ EMERALD_ORE: 6
+ DIAMOND_ORE: 6
+ COAL_ORE: 6
+ GLOWING_REDSTONE_ORE: 6
+ IRON_ORE: 6
+ LAPIS_ORE: 6
+ QUARTZ_ORE: 6
+ REDSTONE_ORE: 6
+ WOOD: 6
+ HARD_CLAY: 7
+ STAINED_CLAY: 7
+ COBBLESTONE: 8
+ GLOWSTONE: 8
+ SANDSTONE: 8
+ RED_SANDSTONE: 8
+ STONE: 10
+ STONE_SLAB2: 10
+ DOUBLE_STONE_SLAB2: 10
+ ENDER_STONE: 10
+ LOG: 10
+ LOG_2: 10
+ BRICK: 12
+ SMOOTH_BRICK: 12
+ END_BRICKS: 12
+ RED_NETHER_BRICK: 12
+ NETHER_BRICK: 12
+ IRON_BLOCK: 15
+ BED_BLOCK: 15
+ EMERALD_BLOCK: 15
+ GOLD_BLOCK: 15
+ DIAMOND_BLOCK: 15
+ OBSIDIAN: 15
+ QUARTZ_BLOCK: 15
+ BEDROCK: 256
